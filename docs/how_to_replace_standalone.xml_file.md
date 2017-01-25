@@ -9,6 +9,6 @@ mkdir configuration
 cp standalone.xml ./configuration/standalone-openshift.xml
 ~~~
 
-Example :
+[Example](https://github.com/Jooho/xPaaS_EAP_Example/tree/master/replace_configuration/configuration)
 
 ##Using cli then commit (/opt/eap/bin/jboss-cli.sh)
