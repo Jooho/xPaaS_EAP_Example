@@ -100,5 +100,6 @@ fi
 ## It is for vault configuation
 cp source/vault/vault.sh /opt/eap/bin/launch/.
 cp source/vault/openshift-launch.sh  /opt/eap/bin/.
+cp source/vault/VAULT.dat  /opt/eap/bin/.
 
 exit 0

@@ -10,7 +10,7 @@ function configure_vault() {
             <vault-option name=\"KEYSTORE_ALIAS\" value=\"${VAULT_KEYSTORE_ALIAS}\"/> \
             <vault-option name=\"SALT\" value=\"${VAULT_SALT}\"/> \
             <vault-option name=\"ITERATION_COUNT\" value=\"${VAULT_ITERATION_COUNT}\"/> \
-            <vault-option name=\"ENC_FILE_DIR\" value=\"/etc/${VAULT_ENC_FILE_SECRET}\"/> \
+            <vault-option name=\"ENC_FILE_DIR\" value=\"/opt/eap/bin\"/> \
            </vault>"
 
   else
@@ -29,3 +29,5 @@ function configure_vault() {
   sed -i "s|<!-- ##VAULT## -->|${vault}|" $CONFIG_FILE
 }
 
+# Secret can not give capital letter for key so it can not use Secret
+#<vault-option name=\"ENC_FILE_DIR\" value=\"/etc/${VAULT_ENC_FILE_SECRET}\"/> \
