@@ -235,11 +235,14 @@ parameters:
   value: "vault-keystore"
 - description: Vault keystore password
   name: VAULT_KEYSTORE_PASSWORD
+  value: 'MASK-3/VyfsvXmU95R/eApJkr14'
 - description: Vault keystore alias 
   name: VAULT_KEYSTORE_ALIAS
   value: "vault"
 - description: Vault salt
   name: VAULT_SALT
+  value: "1234abcd"
 - description: Vault interation count
   name: VAULT_ITERATION_COUNT
+  value: "120"
 

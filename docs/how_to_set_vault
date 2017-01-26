@@ -2,11 +2,12 @@
  The Secret object type in OpenShift Container Platform provides a mechanism to hold sensitive information such as passwords, OpenShift client config files, dockercfg files, etc. Secrets decouple sensitive content from the pods that use it and can be mounted into containers using a volume plug-in or used by the system to perform actions on behalf of a pod. 
  However, it encod the string not encrypt hence, using Password Vault feature from eap, it can be used to mask the password information and store it in an encrypted keystore.
 
+
 ## Process flow
  - Create keystore
  - 
 
-
+## Create Vault keystore and Vault DAT file
 ### Using OpenShift Official Image ( You can use your own eap on your local)
 ~~~
 $ oc new-project test
@@ -26,13 +27,14 @@ $ cd /opt/eap/bin
 
 ### Create keystore
 ~~~
-$ keytool -genseckey -alias vault -storetype jceks -keyalg AES -keysize 128 -storepass secretsecret -keypass secretsecret -validity 730 -keystore $JBOSS_HOME/bin/vault.keystore
+$ mkdir /etc/vault-keystore
+$ keytool -genseckey -alias vault -storetype jceks -keyalg AES -keysize 128 -storepass secretsecret -keypass secretsecret -validity 730 -keystore /etc/vault-keystore/vault.keystore
 ~~~
 
 
 ### Add string that want to be encrypted to keystore
 ~~~
-./vault.sh --keystore $JBOSS_HOME/bin/vault.keystore --keystore-password secretsecret --alias vault --vault-block vb --attribute password --sec-attr 0penS3sam3 --enc-dir $JBOSS_HOME/bin --iteration 120 --salt 1234abcd
+./vault.sh --keystore /etc/vault-keystore/vault.keystore --keystore-password secretsecret --alias vault --vault-block vb --attribute password --sec-attr 0penS3sam3 --enc-dir $JBOSS_HOME/bin --iteration 120 --salt 1234abcd
 
 WARNING JBOSS_HOME may be pointing to a different installation - unpredictable results may occur.
 
@@ -62,7 +64,7 @@ Vault Configuration in configuration file:
 ...
 </extensions>
 <vault>
-  <vault-option name="KEYSTORE_URL" value="/opt/eap/bin/vault.keystore"/>
+  <vault-option name="KEYSTORE_URL" value="/etc/vault-keystore/vault.keystore"/>
   <vault-option name="KEYSTORE_PASSWORD" value="MASK-3/VyfsvXmU95R/eApJkr14"/>
   <vault-option name="KEYSTORE_ALIAS" value="vault"/>
   <vault-option name="SALT" value="1234abcd"/>
@@ -82,12 +84,30 @@ $ docker cp eap64:/opt/eap/bin/vault.keystore .
 ~~~
 
 
+## Example 
+### Clone git repository
+~~~
+$ git clone https://github.com/Jooho/xPaaS_EAP_Example.git
+$ cd add_vault
+~~~
+
+ 
 ### Create Secret
 ~~~
-oc secrets new vault-dat vault-dat=VAULT.dat
-oc secrets new vault-keystore vault.keystore
+oc secrets new vault-keystore vault/vault.keystore
 ~~~
 
+### Create Service Account
+~~~
+$ oc create -f ose_scripts/vault-service-account.yaml
+~~~
 
-### Create Custom Template
+### Create Sample Template
+~~~
+$ oc create -f ose_scripts/eap64-basic-s2i.template
+~~~
 
+### Create new app
+~~~
+$ oc new-app --template=eap64-basic-s2i
+~~~
