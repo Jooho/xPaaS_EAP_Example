@@ -1,5 +1,5 @@
 #!/bin/bash
-cp /tmp/script/assemble /usr/local/s2i/.
+cp /tmp/scripts/assemble /usr/local/s2i/.
 
 . $(dirname $0)/common.sh
 
