@@ -4,9 +4,9 @@ This repos provide xPaaS eap examples.
 ## Doc List
 - [How to replace standalone.xml file](https://github.com/Jooho/xPaaS_EAP_Example/blob/master/docs/how_to_replace_standalone.xml_file.md)
 - [How to add modules](https://github.com/Jooho/xPaaS_EAP_Example/blob/master/docs/how_to_add_modules.md)
-- How to configure Datasource
+- How to configure Datasource - TBD
 - [How to set Vault](https://github.com/Jooho/xPaaS_EAP_Example/blob/master/docs/how_to_set_vault)
-- How to set SSL for https
+- [How to set SSL for https](https://github.com/Jooho/ose_smart_start_ansible/tree/master/roles/sample_eap_ssl)
 
 
 
