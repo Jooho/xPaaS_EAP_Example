@@ -1,12 +1,6 @@
 #!/bin/bash
-cp /tmp/scripts/assemble /usr/local/s2i/.
-
 . $(dirname $0)/common.sh
 
-# Custom part
-## It is for vault configuation
-cp source/vault/vault.sh /opt/eap/bin/launch/.
-cp source/vault/openshift-launch.sh  /opt/eap/bin/.
 
 # we will move any code provided by s2i to here
 LOCAL_SOURCE_DIR=${HOME}/source
@@ -98,5 +92,11 @@ if [ -d $LOCAL_SOURCE_DIR/modules ]; then
   echo "Copying modules from project..."
   cp -vr $LOCAL_SOURCE_DIR/modules/* $JBOSS_HOME/modules/
 fi
+
+
+# Custom part
+## It is for vault configuation
+cp source/vault/vault.sh /opt/eap/bin/launch/.
+cp source/vault/openshift-launch.sh  /opt/eap/bin/.
 
 exit 0
