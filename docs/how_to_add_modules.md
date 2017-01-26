@@ -46,6 +46,7 @@ $ oc new-app --template=eap64-http-s2i -p SOURCE_REPOSITORY_URL=https://github.c
 $ oc get is
 NAME      DOCKER REPO                                 TAGS      UPDATED
 eap-app   172.30.207.94:5000/sample-eap-ssl/eap-app   latest    13 minutes ago
+~~~
 
 #### Deploy built image with docker command and attach the container
 ~~~
