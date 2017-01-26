@@ -1,0 +1,93 @@
+# How to set Vault
+ The Secret object type in OpenShift Container Platform provides a mechanism to hold sensitive information such as passwords, OpenShift client config files, dockercfg files, etc. Secrets decouple sensitive content from the pods that use it and can be mounted into containers using a volume plug-in or used by the system to perform actions on behalf of a pod. 
+ However, it encod the string not encrypt hence, using Password Vault feature from eap, it can be used to mask the password information and store it in an encrypted keystore.
+
+## Process flow
+ - Create keystore
+ - 
+
+
+### Using OpenShift Official Image ( You can use your own eap on your local)
+~~~
+$ oc new-project test
+$ oc new-app --template=eap64-basic-s2i -p SOURCE_REPOSITORY_URL=https://github.com/Jooho/xPaaS_EAP_Example,SOURCE_REPOSITORY_REF=master,CONTEXT_DIR=replace_configuration -l app=eap-app-test
+$ oc get is
+NAME      DOCKER REPO                                 TAGS      UPDATED
+eap-app   172.30.207.94:5000/sample-eap-ssl/eap-app   latest    13 minutes ago
+
+$ oc login
+$ docker login -u $USER -p $(oc whoami -t) -e $EMAIL 172.30.207.94:5000
+$ docker pull 172.30.207.94:5000/sample-eap-ssl/eap-app
+$ docker run -d --name=eap64 172.30.207.94:5000/sample-eap-ssl/eap-app
+$ docker exec -it eap64 /bin/bash
+$ cd /opt/eap/bin
+~~~
+
+
+### Create keystore
+~~~
+$ keytool -genseckey -alias vault -storetype jceks -keyalg AES -keysize 128 -storepass secretsecret -keypass secretsecret -validity 730 -keystore $JBOSS_HOME/bin/vault.keystore
+~~~
+
+
+### Add string that want to be encrypted to keystore
+~~~
+./vault.sh --keystore $JBOSS_HOME/bin/vault.keystore --keystore-password secretsecret --alias vault --vault-block vb --attribute password --sec-attr 0penS3sam3 --enc-dir $JBOSS_HOME/bin --iteration 120 --salt 1234abcd
+
+WARNING JBOSS_HOME may be pointing to a different installation - unpredictable results may occur.
+
+=========================================================================
+
+  JBoss Vault
+
+  JBOSS_HOME: /opt/eap
+
+  JAVA: /usr/lib/jvm/java-1.8.0/bin/java
+
+=========================================================================
+
+Picked up JAVA_TOOL_OPTIONS: -Duser.home=/home/jboss -Duser.name=jboss
+Jan 26, 2017 9:55:42 AM org.picketbox.plugins.vault.PicketBoxSecurityVault init
+INFO: PBOX000361: Default Security Vault Implementation Initialized and Ready
+Secured attribute value has been stored in vault.
+Please make note of the following:
+********************************************
+Vault Block:vb
+Attribute Name:password
+Configuration should be done as follows:
+VAULT::vb::password::1
+********************************************
+Vault Configuration in configuration file:
+********************************************
+...
+</extensions>
+<vault>
+  <vault-option name="KEYSTORE_URL" value="/opt/eap/bin/vault.keystore"/>
+  <vault-option name="KEYSTORE_PASSWORD" value="MASK-3/VyfsvXmU95R/eApJkr14"/>
+  <vault-option name="KEYSTORE_ALIAS" value="vault"/>
+  <vault-option name="SALT" value="1234abcd"/>
+  <vault-option name="ITERATION_COUNT" value="120"/>
+  <vault-option name="ENC_FILE_DIR" value="/opt/eap/bin/"/>
+</vault><management> ...
+********************************************
+~~~
+
+
+### Download Vault related files
+~~~
+Ctrl-p , Ctrl-q
+
+$ docker cp eap64:/opt/eap/bin/VAULT.dat .
+$ docker cp eap64:/opt/eap/bin/vault.keystore .
+~~~
+
+
+### Create Secret
+~~~
+oc secrets new vault-dat vault-dat=VAULT.dat
+oc secrets new vault-keystore vault.keystore
+~~~
+
+
+### Create Custom Template
+

@@ -20,7 +20,7 @@ cp -R $CUSTOM_MODULE $SOURCE/modules/.
 ### Test with OpenShift
 ~~~
 $ oc new-project test
-$ oc new-app --template=eap64-http-s2i -p SOURCE_REPOSITORY_URL=https://github.com/Jooho/xPaaS_EAP_Example,SOURCE_REPOSITORY_REF=master,CONTEXT_DIR=add_modules -l app=eap-app-test
+$ oc new-app --template=eap64-basic-s2i -p SOURCE_REPOSITORY_URL=https://github.com/Jooho/xPaaS_EAP_Example,SOURCE_REPOSITORY_REF=master,CONTEXT_DIR=add_modules -l app=eap-app-test
 $ oc rsh $EAP_POD
 $ ls /opt/eap/moudles/com/oracle/jdbc/main/ojdbc.jar
 ~~~
