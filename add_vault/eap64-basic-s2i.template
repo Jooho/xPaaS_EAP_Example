@@ -233,9 +233,6 @@ parameters:
 - description: Vault keystore secret name
   name: VAULT_KEYSTORE_SECRET
   value: "vault-keystore"
-- description: Vault enc file secret name
-  name: VAULT_ENC_FILE_SECRET
-  value: "vault-dat"
 - description: Vault keystore password
   name: VAULT_KEYSTORE_PASSWORD
 - description: Vault keystore alias 

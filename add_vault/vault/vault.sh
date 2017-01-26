@@ -2,7 +2,7 @@
 
 function configure_vault() {
   vault="<!-- No vault configuration discovered -->"
-  if [ -n "${VAULT_KEYSTORE_PASSWORD}" -a -n "${VAULT_KEYSTORE_ALIAS}" -a -n "${VAULT_SALT}" -a -n "${VAULT_ITERATION_COUNT}" -a -n "${VAULT_KEYSTORE_SECRET}"  -a -n "${VAULT_ENC_FILE_SECRET}" ] ; then
+  if [ -n "${VAULT_KEYSTORE_PASSWORD}" -a -n "${VAULT_KEYSTORE_ALIAS}" -a -n "${VAULT_SALT}" -a -n "${VAULT_ITERATION_COUNT}" -a -n "${VAULT_KEYSTORE_SECRET}"  ] ; then
   
          vault="<vault> \
             <vault-option name=\"KEYSTORE_URL\" value=\"/etc/${VAULT_KEYSTORE_SECRET}/vault.keystore\"/> \
@@ -22,7 +22,6 @@ function configure_vault() {
         echo "VAULT_KEYSTORE_ALIAS=${VAULT_KEYSTORE_ALIAS}"
         echo "VAULT_SALT=${VAULT_SALT}"
         echo "VAULT_ITERATION_COUNT=${VAULT_ITERATION_COUNT}"
-        echo "VAULT_ENC_FILE_SECRET=/etc/${VAULT_ENC_FILE_SECRET}"
 
 
   fi
