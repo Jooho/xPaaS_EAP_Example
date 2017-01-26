@@ -12,7 +12,8 @@ This repos provide xPaaS eap examples.
 
 ## Topic
 - Do we need management console controller with RBAC?
-  - xPaaS EAP does not provide webconsole but still can be connected by jboss-cli.sh
-    However, it can not change image hence, RBAC is not needed anymore. Nevertheless, it can be configured by replacing of configuation file.
+  - xPaaS EAP does not provide webconsole but still it allows to be connected by jboss-cli.sh inside container
+    Although it can modify configuration, the changes will be disappeared when the container is restarted. Back to original question,     
+    do we still need to configure RBAC? From my understanding, it is not needed because jboss-cli only affect to container itself not image. However, RBAC can be configured if it is really wanted to be. 
 
 
