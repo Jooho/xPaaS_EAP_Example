@@ -1,5 +1,5 @@
 #!/bin/bash
-. /usr/local/s2i$0)/common.sh
+. /usr/local/s2i/common.sh
 
 #. $(dirname $0)/common.sh
 
