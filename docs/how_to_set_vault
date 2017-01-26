@@ -2,11 +2,6 @@
  The Secret object type in OpenShift Container Platform provides a mechanism to hold sensitive information such as passwords, OpenShift client config files, dockercfg files, etc. Secrets decouple sensitive content from the pods that use it and can be mounted into containers using a volume plug-in or used by the system to perform actions on behalf of a pod. 
  However, it encod the string not encrypt hence, using Password Vault feature from eap, it can be used to mask the password information and store it in an encrypted keystore.
 
-
-## Process flow
- - Create keystore
- - 
-
 ## Create Vault keystore and Vault DAT file
 ### Using OpenShift Official Image ( You can use your own eap on your local)
 ~~~
@@ -110,4 +105,13 @@ $ oc create -f ose_scripts/eap64-basic-s2i.template
 ### Create new app
 ~~~
 $ oc new-app --template=eap64-basic-s2i
+~~~
+
+
+## Tip
+
+*Config EAP to use Vault using cli
+~~~
+/core-service=vault:add(vault-options=[("KEYSTORE_URL" => "$JBOSS_HOME/bin/vault.keystore"), ("KEYSTORE_PASSWORD" => "MASK-5dOaAVafCSd"), ("KEYSTORE_ALIAS" => "vault"), ("SALT" => 
+"1234abcd"),("ITERATION_COUNT" => "120"), ("ENC_FILE_DIR" => "EAP_HOME/vault/")])
 ~~~

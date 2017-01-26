@@ -1,0 +1,26 @@
+- How to configure Datasource
+   - adding standalone-openshift.xml under configuration folder
+   - using cli then commit 
+    /subsystem=datasources/jdbc-driver=mysql:add(drivername=mysql,driver-module-name=com.mysql,driver-xa-datasourceclass-name=com.mysql.jdbc.jdbc2.optional.MysqlXADataSource)
+
+   - Parameterized (custom configuration file)
+
+ 
+
+ - How to set SSL for https
+   - If want to apply normal cert, just use secret
+   - If want to apply complex cert, need to use configuration.xml file.
+
+*Create socket-binding
+ /socket-binding-group=standard-sockets/socket-binding=https2:add(port=8888)
+
+
+*Create Connector
+  /subsystem=web/connector=https/:add(socket-binding=https,scheme=https,protocol=HTTP/1.1,secure=true,enabled=false,enable-lookups=false)
+
+*Create ssl 
+
+
+/subsystem=web/connector=https/configuration=ssl:add(certificate-key-file=/etc/eap-secret-volume/keystore.jks,cipher-suite=HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5,password=supersecret)
+
+
